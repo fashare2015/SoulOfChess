@@ -1,0 +1,29 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/common_background"
+    android:orientation="vertical"
+    >
+
+    <include layout="@layout/title_bar"/>
+
+    <com.handmark.pulltorefresh.library.PullToRefreshListView
+        android:id="@+id/plv"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:layout_weight="1"
+        android:layout_marginLeft="60dp"
+        android:layout_marginRight="60dp" />
+
+    <TextView
+        android:id="@+id/my_rank"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:text="我的排名："
+        android:textSize="20dp"
+        android:background="@drawable/btn_bg_selector"
+        android:layout_marginBottom="40dp"
+        android:padding="15dp"/>
+
+</LinearLayout>
