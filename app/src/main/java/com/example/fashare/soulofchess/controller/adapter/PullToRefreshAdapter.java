@@ -1,5 +1,6 @@
 package com.example.fashare.soulofchess.controller.adapter;
 
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.Intent;
@@ -92,9 +93,10 @@ public class PullToRefreshAdapter extends BaseAdapter {
         new AlertDialog.Builder(context).setTitle(player.getUsername())
                 .setNegativeButton("取消", null)
                 .setPositiveButton("挑战", (dialogInterface, i) -> {
-                    context.startActivity(
+                    ((Activity)context).startActivityForResult(
                             new Intent(context, PkActivity.class)
-                            .putExtra("hasTwoAI", true));
+                                    .putExtra("hasTwoAI", true),
+                            0);
                 }).show();
     }
 

@@ -6,9 +6,12 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.view.Window;
+import android.widget.EditText;
 import android.widget.ImageView;
 
 import com.example.fashare.soulofchess.base.BaseActivity;
+import com.example.fashare.soulofchess.component.http.HttpHelper;
+import com.example.fashare.soulofchess.config.UrlConstant;
 import com.example.fashare.soulofchess.controller.GameController;
 import com.example.fashare.soulofchess.model.AIInfo;
 import com.example.fashare.soulofchess.model.ChessMap;
@@ -19,6 +22,7 @@ import com.example.fashare.soulofchess.model.RankCenter;
 import com.example.fashare.soulofchess.model.SimpleAI;
 import com.example.fashare.soulofchess.model.UserCenter;
 import com.example.fashare.soulofchess.view.ChessBoardView;
+import com.loopj.android.http.RequestParams;
 
 
 public class PkActivity extends BaseActivity{
@@ -61,7 +65,25 @@ public class PkActivity extends BaseActivity{
 
     public void initView() {
         chessBoardView = (ChessBoardView)findViewById(R.id.cbv);
-        chessBoardView.setWinCallback(curPlayer -> showWinDlg(curPlayer));
+        chessBoardView.setWinCallback(curPlayer -> {
+            if(curPlayer == gameInfo.getBlackPlayer())
+                upDateRank();
+            showWinDlg(curPlayer);
+        });
+    }
+
+    private void upDateRank() {
+        RequestParams params = new RequestParams();
+        params.put("winner", UserCenter.getInstance().getUser().getUsername());
+        params.put("loser", RankCenter.getInstance().getCurPlayer().getUsername());
+        new HttpHelper(params).setCallback((response) -> {
+            setResult(RESULT_OK);
+//            usernames = HttpHelper.jsonToList(response);
+//            adapter.setUsernames(usernames);
+//            //myRank.setText(String.format("我的排名：第%d名", usernames.size()+1));
+//            myRank.setText(String.format("我的排名：第%d名", 1));
+//            plv.onRefreshComplete();
+        }).post(UrlConstant.UPDATE_RANK);
     }
 
     private void showWinDlg(Player curPlayer) {

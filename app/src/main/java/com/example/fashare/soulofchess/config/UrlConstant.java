@@ -10,5 +10,5 @@ public class UrlConstant {
     public static final String GET_USER_BY_USERNAME = BASE_URL + "get_user_by_username.php";
     public static final String ADD_STRATEGY = BASE_URL + "add_strategy.php";
     public static final String LOGIN = BASE_URL + "login.php";
-
+    public static final String UPDATE_RANK = BASE_URL + "update_rank.php";
 }

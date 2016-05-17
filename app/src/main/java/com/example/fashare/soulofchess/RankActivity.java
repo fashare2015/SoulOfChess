@@ -1,5 +1,6 @@
 package com.example.fashare.soulofchess;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.widget.TextView;
@@ -8,6 +9,7 @@ import com.example.fashare.soulofchess.base.BaseActivity;
 import com.example.fashare.soulofchess.component.http.HttpHelper;
 import com.example.fashare.soulofchess.config.UrlConstant;
 import com.example.fashare.soulofchess.controller.adapter.PullToRefreshAdapter;
+import com.example.fashare.soulofchess.model.UserCenter;
 import com.handmark.pulltorefresh.library.PullToRefreshListView;
 
 import org.w3c.dom.Text;
@@ -42,10 +44,18 @@ public class RankActivity extends BaseActivity {
         new HttpHelper().setArrayCallback((response) -> {
             usernames = HttpHelper.jsonToList(response);
             adapter.setUsernames(usernames);
-            //myRank.setText(String.format("我的排名：第%d名", usernames.size()+1));
-            myRank.setText(String.format("我的排名：第%d名", 1));
+            myRank.setText(String.format("我的排名：第%d名",
+                    getRankByName(UserCenter.getInstance().getUser().getUsername())));
+            //myRank.setText(String.format("我的排名：第%d名", 1));
             plv.onRefreshComplete();
         }).post(UrlConstant.GET_RANK_LIST);
+    }
+
+    private int getRankByName(String username) {
+        for(int i = 0; i < usernames.size(); i++)
+            if(username.equals(usernames.get(i)))
+                return i+1;
+        return 9999;
     }
 
     public void initView() {
@@ -60,4 +70,10 @@ public class RankActivity extends BaseActivity {
         myRank = (TextView)findViewById(R.id.my_rank);
     }
 
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if(resultCode == RESULT_OK)
+            loadData();
+    }
 }
